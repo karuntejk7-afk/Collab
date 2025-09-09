@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SPR Food Delivery Dashboard</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background-color: #f4f6f8;
+      color: #333;
+    }
+
+    header {
+      background-color: #0f4c75;
+      color: #fff;
+      padding: 20px;
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 20px;
+    }
+
+    .cards {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 30px;
+    }
+
+    .card {
+      background-color: #fff;
+      padding: 20px;
+      flex: 1;
+      min-width: 200px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      text-align: center;
+    }
+
+    .card h2 {
+      font-size: 28px;
+      color: #0f4c75;
+    }
+
+    .card p {
+      font-size: 16px;
+      color: #555;
+    }
+
+    table {
+      width: 100%;
+      background-color: #fff;
+      border-collapse: collapse;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 15px;
+      border-bottom: 1px solid #ddd;
+      text-align: left;
+    }
+
+    th {
+      background-color: #0f4c75;
+      color: #fff;
+    }
+
+    tr:hover {
+      background-color: #f1f1f1;
+    }
+
+    .status {
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+
+    .on-time {
+      background-color: #c8e6c9;
+      color: #2e7d32;
+    }
+
+    .late {
+      background-color: #ffcdd2;
+      color: #c62828;
+    }
+
+    @media (max-width: 768px) {
+      .cards {
+        flex-direction: column;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    SPR Food Delivery Dashboard
+  </header>
+
+  <div class="container">
+    <!-- Summary Cards -->
+    <div class="cards">
+      <div class="card">
+        <h2 id="totalOrders">0</h2>
+        <p>Total Orders</p>
+      </div>
+      <div class="card">
+        <h2 id="onTimeDeliveries">0</h2>
+        <p>On-Time Deliveries</p>
+      </div>
+      <div class="card">
+        <h2 id="lateDeliveries">0</h2>
+        <p>Late Deliveries</p>
+      </div>
+    </div>
+
+    <!-- Orders Table -->
+    <table>
+      <thead>
+        <tr>
+          <th>Order ID</th>
+          <th>Customer</th>
+          <th>Meal</th>
+          <th>Delivery Time</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="orderTableBody">
+        <!-- JavaScript will populate -->
+      </tbody>
+    </table>
+  </div>
+
+  <script>
+    // Sample data for demonstration
+    const orders = [
+      { id: "ORD001", customer: "Alice", meal: "Vegan Box", time: "12:30 PM", status: "on-time" },
+      { id: "ORD002", customer: "Bob", meal: "Chicken Meal", time: "1:00 PM", status: "late" },
+      { id: "ORD003", customer: "Charlie", meal: "Beef Meal", time: "11:45 AM", status: "on-time" },
+      { id: "ORD004", customer: "Diana", meal: "Pasta Box", time: "2:15 PM", status: "on-time" },
+      { id: "ORD005", customer: "Eve", meal: "Salad Combo", time: "12:00 PM", status: "late" },
+    ];
+
+    const tableBody = document.getElementById("orderTableBody");
+    const totalOrders = document.getElementById("totalOrders");
+    const onTimeDeliveries = document.getElementById("onTimeDeliveries");
+    const lateDeliveries = document.getElementById("lateDeliveries");
+
+    function renderTable() {
+      let onTimeCount = 0;
+      let lateCount = 0;
+
+      orders.forEach(order => {
+        const row = document.createElement("tr");
+
+        const statusClass = order.status === "on-time" ? "on-time" : "late";
+        if (order.status === "on-time") onTimeCount++;
+        else lateCount++;
+
+        row.innerHTML = `
+          <td>${order.id}</td>
+          <td>${order.customer}</td>
+          <td>${order.meal}</td>
+          <td>${order.time}</td>
+          <td><span class="status ${statusClass}">${order.status.replace("-", " ")}</span></td>
+        `;
+        tableBody.appendChild(row);
+      });
+
+      totalOrders.textContent = orders.length;
+      onTimeDeliveries.textContent = onTimeCount;
+      lateDeliveries.textContent = lateCount;
+    }
+
+    renderTable();
+  </script>
+
+</body>
+</html>
